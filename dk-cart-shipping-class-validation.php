@@ -2,13 +2,12 @@
 
 /**
  * @link              d.kasperavicius@gmail.com
- * @since             1.0.0
  * @package           Dk_Cart_Shipping_Class_Validation
  * @wordpress-plugin
  * Plugin Name:       Only one shipping class in the cart
  * Description:       Ability to add products to the cart only with the same shipping class
  * Plugin URI:        d.kasperavicius@gmail.com
- * Version:           1.0.0
+ * Version:           1.0.1
  * Author:            Dainius Kasperavicius
  * Author URI:        d.kasperavicius@gmail.com
  * Text Domain:       dk-cart-shipping-class-validation
@@ -43,3 +42,17 @@ function dk_shipping_class_add_to_cart_validation($passed, $product_id)
 }
 
 add_filter('woocommerce_add_to_cart_validation', 'dk_shipping_class_add_to_cart_validation', 1, 2);
+
+function amount_in_package_activate()
+{
+    if (!class_exists('WooCommerce')) {
+        deactivate_plugins(plugin_basename(__FILE__));
+        wp_die(
+            __('Please install and Activate WooCommerce.', 'dk-amount-in-package'),
+            'Plugin dependency check',
+            ['back_link' => true]
+        );
+    }
+}
+
+register_activation_hook(__FILE__, 'amount_in_package_activate');
